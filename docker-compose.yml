@@ -1,0 +1,14 @@
+services:
+  ui-tests:
+    image: qaa_practice:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/usr/workspace
+    command: /bin/sh -c "ls -la && pytest -sv --alluredir=allure-results"
+    working_dir: /usr/workspace
+    environment:
+      - ENV=docker
+      - LOGIN=${LOGIN}
+      - PASSWORD=${PASSWORD}

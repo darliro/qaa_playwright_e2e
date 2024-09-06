@@ -1,0 +1,44 @@
+[project]
+name = "qaa_practice"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "darli.ro", email = "glicerinn@gmail.com"},
+]
+dependencies = [
+    "allure-pytest",
+    "allure-python-commons",
+    "attrs",
+    "certifi",
+    "charset-normalizer",
+    "Faker",
+    "h11",
+    "idna",
+    "iniconfig",
+    "outcome",
+    "packaging",
+    "pluggy",
+    "pre-commit",
+    "PySocks",
+    "pytest",
+    "python-dotenv",
+    "requests",
+    "ruff",
+    "selenium",
+    "sniffio",
+    "sortedcontainers",
+    "trio",
+    "trio-websocket",
+    "typing-extensions",
+    "urllib3",
+    "webdriver-manager",
+    "websocket-client",
+    "wsproto",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false
