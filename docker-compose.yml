@@ -1,5 +1,6 @@
 services:
   ui-tests:
+    container_name: ui-tests
     image: qaa_practice:latest
     build:
       context: .

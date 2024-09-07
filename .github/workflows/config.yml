@@ -1,6 +1,7 @@
 name: UI Tests
 
-on: workflow_dispatch
+on: [push]
+#workflow_dispatch
 
 jobs:
   ui-tests:
@@ -9,44 +10,47 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - name: Check Docker version
+        run: docker version
+
+      - name: Check Docker Compose version
+        run: docker compose version
+
       - name: Checkout gh-pages repository to GitHub runner
         uses: actions/checkout@v3
         with:
           ref: gh-pages
           path: ./.github/gh-pages
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       - name: Run UI-tests via docker-compose
         env:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          docker-compose up --exit-code-from regression || exit_code=$?
-          echo "::set-output name=exit_code::$exit_code"
+          docker compose up --exit-code-from ui-tests || exit_code=$?
+          echo "exit_code=${exit_code}" >> $GITHUB_ENV
+
+      - name: Check container logs
+        run: docker compose logs
+
+      - name: List Allure results
+        run: ls -la allure-results
 
       - name: Copy history from gh-pages to allure-results
         run: |
           mkdir -p allure-results/history
-          cp -R ./.github/gh-pages/history/* allure-results/history/
+          if [ -d ".github/gh-pages/history" ]; then
+            cp -R ./.github/gh-pages/history/* allure-results/history/
+          fi
 
       - name: Generate Allure report
         run: |
           echo "Generating Allure report..."
-          docker-compose run regression /bin/sh -c "allure generate allure-results --clean -o allure-report"
+          docker compose run ui-tests /bin/sh -c "allure generate allure-results --clean -o allure-report"
 
       - name: Update Allure history
         run: |
-          cp -R allure-report/history/* ./.github/gh-pages/history/
+          cp -R allure-report/history/* ./.github/gh-pages/history/ || true
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4

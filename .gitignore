@@ -11,6 +11,8 @@ workspace.xml
 
 # Pytest cache files
 .pytest_cache/
+__pycache__/
+*.pyc
 
 # Allure test report results
 allure-report/
