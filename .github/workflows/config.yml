@@ -1,16 +1,16 @@
 name: UI Tests
 
-on: workflow_dispatch
+on: [push]
 
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Checkout (copy) gh-pages repository to GitHub runner
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: gh-pages
           path: ./.github/gh-pages
