@@ -5,10 +5,16 @@ on: [push]
 
 jobs:
   ui-tests:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
+
+      - name: Check Docker version
+        run: docker --version
+
+      - name: Check Docker Compose version
+        run: docker-compose --version
 
       - name: Checkout gh-pages repository to GitHub runner
         uses: actions/checkout@v3
