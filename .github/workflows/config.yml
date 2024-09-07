@@ -16,23 +16,12 @@ jobs:
           ref: gh-pages
           path: ./.github/gh-pages
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Cache Docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
       - name: Run UI-tests via docker-compose
         env:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          docker-compose up --exit-code-from regression || exit_code=$?
+          docker-compose up --exit-code-from ui-tests || exit_code=$?
           echo "::set-output name=exit_code::$exit_code"
 
       - name: Copy history from gh-pages to allure-results
