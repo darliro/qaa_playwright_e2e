@@ -1,6 +1,7 @@
 name: UI Tests
 
-on: workflow_dispatch
+on: [push]
+#workflow_dispatch
 
 jobs:
   ui-tests:
@@ -37,7 +38,9 @@ jobs:
       - name: Copy history from gh-pages to allure-results
         run: |
           mkdir -p allure-results/history
-          cp -R ./.github/gh-pages/history/* allure-results/history/
+          if [ -d ".github/gh-pages/history" ]; then
+            cp -R ./.github/gh-pages/history/* allure-results/history/
+          fi
 
       - name: Generate Allure report
         run: |
@@ -46,7 +49,7 @@ jobs:
 
       - name: Update Allure history
         run: |
-          cp -R allure-report/history/* ./.github/gh-pages/history/
+          cp -R allure-report/history/* ./.github/gh-pages/history/ || true
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
