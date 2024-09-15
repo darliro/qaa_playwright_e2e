@@ -33,7 +33,7 @@ jobs:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          pdm run pytest -sv --alluredir=allure-results --headless
+          pdm run pytest -sv --alluredir=allure-results
 
       # List Allure results
       - name: List Allure results
