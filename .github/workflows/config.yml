@@ -2,12 +2,6 @@ name: UI Tests
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - '**/*.py'
-      - '.github/**'
-      - 'tests/**'
 
 jobs:
   ui-tests:
