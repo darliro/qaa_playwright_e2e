@@ -29,4 +29,8 @@ class TestProfileFeature(BaseTest):
         with allure.step("Verify profile name update"):
             self.personal_page.verify_first_name_is_updated(random_first_name)
             screenshot = page.screenshot()
-            allure.attach(screenshot, name="Profile_name_change_success", attachment_type=allure.attachment_type.PNG)
+            allure.attach(
+                screenshot,
+                name="Profile_name_change_success",
+                attachment_type=allure.attachment_type.PNG,
+            )
