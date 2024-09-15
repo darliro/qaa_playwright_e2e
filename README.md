@@ -1,12 +1,11 @@
-[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://www.python.org/)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-black.svg)](https://www.python.org/)
 [![PyTest](https://img.shields.io/badge/PyTest-blue?logo=pytest)](https://pytest.org/)
-[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm-project.org)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![Allure TestOps](https://img.shields.io/badge/Allure_TestOps-blueviolet?style=flat-square)](https://docs.qameta.io/allure-testops/)
+[![Playwright](https://img.shields.io/badge/Playwright-green?logo=playwright)](https://playwright.dev/)
+[![Allure TestOps](https://img.shields.io/badge/Allure-blueviolet?logo=allure)](https://docs.qameta.io/allure-testops/)
 
-## AQA Project with E2E Tests
+## AQAQUEST Project with E2E Tests
 ### by DarliRo
-This project is for writing and running automated tests using **Pytest**, **Selenium** etc (TBD)
+This project is for writing and running automated tests using **Pytest** & **Playwright** (TBD)
 
 ### Initial Setup
 - [ ] Install [Python](https://www.python.org/downloads/) (version 3.12 or later)
