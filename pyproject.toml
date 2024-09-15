@@ -1,44 +1,65 @@
 [project]
-name = "qaa_practice"
+name = "qaa_playwrite_e2e"
 version = "0.1.0"
 description = "Default template for PDM package"
 authors = [
     {name = "darli.ro", email = "glicerinn@gmail.com"},
 ]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
 dependencies = [
     "allure-pytest",
     "allure-python-commons",
     "attrs",
     "certifi",
+    "cfgv",
     "charset-normalizer",
+    "distlib",
     "Faker",
+    "filelock",
+    "greenlet",
     "h11",
+    "identify",
     "idna",
     "iniconfig",
+    "nodeenv",
     "outcome",
     "packaging",
+    "platformdirs",
+    "playwright",
     "pluggy",
     "pre-commit",
+    "pyee",
     "PySocks",
     "pytest",
+    "pytest-playwright",
+    "python-dateutil",
     "python-dotenv",
+    "python-slugify",
+    "PyYAML",
     "requests",
     "ruff",
-    "selenium",
+    "six",
     "sniffio",
     "sortedcontainers",
-    "trio",
-    "trio-websocket",
-    "typing-extensions",
+    "text-unidecode",
+    "typing_extensions",
     "urllib3",
-    "webdriver-manager",
-    "websocket-client",
-    "wsproto",
+    "virtualenv",
+    "wsproto"
 ]
-requires-python = "==3.12.*"
-readme = "README.md"
-license = {text = "MIT"}
-
 
 [tool.pdm]
 distribution = false
+
+[tool.pdm.scripts]
+install_browsers = "playwright install"
+
+[tool.pytest.ini_options]
+markers = [
+    "smoke: mark a test as a smoke test",
+    "regression: mark a test as a regression test"
+]
+addopts = "--headed --alluredir=allure-results --tb=long -v"
