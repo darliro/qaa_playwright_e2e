@@ -1,29 +1,18 @@
 import pytest
-from _pytest.fixtures import FixtureRequest
-from selenium.webdriver.chrome.webdriver import WebDriver
 from config.data_config import Data
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
 from pages.personal_page import PersonalPage
+from playwright.sync_api import Page
 
 
 class BaseTest:
-    """
-    Initializes the base test configuration.
-    """
-
-    data: Data = None
-    login_page: LoginPage = None
-    dashboard_page: DashboardPage = None
-    personal_page: PersonalPage = None
-
-    @pytest.fixture(scope="class", autouse=True)
-    def setup(self, request: FixtureRequest, driver: WebDriver) -> None:
+    @pytest.fixture(autouse=True)
+    def setup(self, page: Page) -> None:
         """
-        Fixture for initializing base pages and data for tests.
+        Runs automatically and initializes data and the necessary page objects.
         """
-        request.cls.driver = driver
-        request.cls.data = Data()
-        request.cls.login_page = LoginPage(driver)
-        request.cls.dashboard_page = DashboardPage(driver)
-        request.cls.personal_page = PersonalPage(driver)
+        self.data: Data = Data()
+        self.login_page: LoginPage = LoginPage(page)
+        self.dashboard_page: DashboardPage = DashboardPage(page)
+        self.personal_page: PersonalPage = PersonalPage(page)
