@@ -1,39 +1,43 @@
 import allure
-from allure_commons.types import AttachmentType
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.webdriver import WebDriver
+from playwright.sync_api import Page, expect
+from datetime import datetime
 
 
 class BasePage:
-    """
-    Base page initialization.
-    """
+    def __init__(self, page: Page):
+        self.page: Page = page
 
-    def __init__(self, driver: WebDriver):
-        self.driver: WebDriver = driver
-        self.wait = WebDriverWait(driver, 10, poll_frequency=1)
+    @allure.step("Opening page: {url}")
+    def open_page(self, url: str = None) -> None:
+        target_url: str = url or getattr(self, "PAGE_URL", None)
+        self.page.goto(target_url, wait_until="load")
 
-    def open(self) -> None:  # Annotated return type as None
-        """
-        Opens the page using the URL specified in PAGE_URL.
-        """
-        with allure.step(f"Open {self.PAGE_URL} page"):
-            self.driver.get(self.PAGE_URL)
-
+    @allure.step("Verifying URL: {self.PAGE_URL}")
     def verify_url(self) -> None:
-        """
-        Verifies that the current URL matches PAGE_URL.
-        """
-        with allure.step(f"Page {self.PAGE_URL} is opened"):
-            self.wait.until(EC.url_to_be(self.PAGE_URL))
+        expected_url: str = getattr(self, "PAGE_URL", None)
+        expect(self.page).to_have_url(expected_url)
 
-    def make_screenshot(self, screenshot_name: str) -> None:
-        """
-        Takes a screenshot of the current page and attaches it to the Allure report.
-        """
-        allure.attach(
-            body=self.driver.get_screenshot_as_png(),
+    @allure.step("Taking screenshot: {screenshot_name}")
+    def make_screenshot(self, screenshot_name: str = "screenshot") -> None:
+        timestamp: str = datetime.now().strftime("%Y%m%d_%H%M%S")
+        screenshot_path: str = f"{screenshot_name}_{timestamp}.png"
+        self.page.screenshot(path=screenshot_path)
+        allure.attach.file(
+            screenshot_path,
             name=screenshot_name,
-            attachment_type=AttachmentType.PNG,
+            attachment_type=allure.attachment_type.PNG,
         )
+
+    @allure.step("Clearing and filling element: {locator}")
+    def clear_and_fill(self, locator: str, value: str) -> None:
+        element = self.page.locator(locator)
+        element.click()
+        element.fill("")
+        element.fill(value)
+
+    @allure.step("Waiting for spinner to be hidden: {spinner_locator}")
+    def wait_for_spinner(
+            self, spinner_locator: str = ".oxd-loading-spinner", timeout: int = 10000
+    ) -> None:
+        spinner = self.page.locator(spinner_locator)
+        expect(spinner).to_be_hidden(timeout=timeout)
