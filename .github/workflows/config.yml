@@ -27,17 +27,13 @@ jobs:
       - name: Set headless mode
         run: echo "HEADLESS=true" >> $GITHUB_ENV
 
-      # Output HEADLESS variable for debugging
-      - name: Check HEADLESS mode
-        run: echo "HEADLESS=$HEADLESS"
-
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
         env:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          pdm run pytest -sv --alluredir=allure-results
+          pytest -sv --alluredir=allure-results --log-cli-level=DEBUG
 
       # List Allure results
       - name: List Allure results

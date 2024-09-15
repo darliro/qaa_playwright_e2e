@@ -41,8 +41,3 @@ class BasePage:
     ) -> None:
         spinner = self.page.locator(spinner_locator)
         expect(spinner).to_be_hidden(timeout=timeout)
-
-    @allure.step("Waiting for element to be visible and clicking: {locator}")
-    def wait_and_click(self, locator: str, timeout: int = 60000) -> None:
-        self.page.locator(locator).wait_for(state="visible", timeout=timeout)
-        self.page.locator(locator).click()
