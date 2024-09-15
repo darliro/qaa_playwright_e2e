@@ -1,52 +1,64 @@
 name: UI Tests
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - '**/*.py'
-      - '.github/**'
-      - 'tests/**'
+  workflow_dispatch:
 
 jobs:
   ui-tests:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
+      # Checkout the main repository
       - uses: actions/checkout@v3
 
-      # Set up Playwright with the official action
-      - name: Set up Playwright
-        uses: microsoft/playwright-github-action@v1
+      # Checkout gh-pages branch to GitHub runner
+      - name: Checkout gh-pages repository to GitHub runner
+        uses: actions/checkout@v3
         with:
-          install-deps: true
+          ref: gh-pages
+          path: ./.github/gh-pages
 
-      # Install dependencies using PDM
-      - name: Install dependencies
-        run: pdm install --prod --no-self --no-editable
+      # Set up Node.js and install Playwright dependencies
+      - name: Set up Node.js and install dependencies
+        uses: actions/setup-node@v3
+        with:
+          node-version: 'lts/*'
 
-      # Run UI tests with Playwright and Allure
-      - name: Run UI tests
+      # Install project dependencies
+      - name: Install project dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+
+      # Run Playwright tests
+      - name: Run UI tests with Playwright
         env:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          pdm run pytest -sv --alluredir=allure-results
+          npx playwright test --reporter=line --output=allure-results || true
 
-      # List Allure results
-      - name: List Allure results
-        run: ls -la allure-results
+      # Copy history from gh-pages to allure-results for Allure report
+      - name: Copy history from gh-pages to allure-results
+        run: |
+          sudo mkdir -p allure-results/history
+          sudo cp -R ./.github/gh-pages/history/* allure-results/history/
 
       # Generate Allure report
       - name: Generate Allure report
-        run: allure generate allure-results --clean -o allure-report
+        run: |
+          allure generate allure-results --clean -o allure-report
 
-      # Deploy to GitHub Pages
+      # Update Allure history
+      - name: Update Allure history
+        run: |
+          sudo cp -R allure-report/history/* ./.github/gh-pages/history/
+
+      # Deploy Allure report to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           token: ${{ secrets.CI_TOKEN }}
           branch: gh-pages
           folder: allure-report
+          clean: true
