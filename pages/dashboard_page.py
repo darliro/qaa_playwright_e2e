@@ -12,7 +12,7 @@ class DashboardPage(BasePage):
 
     @allure.step("Click on 'My Info' link")
     def click_my_info_link(self) -> None:
-        self.page.locator(self.MY_INFO_BUTTON).click()
+        self.wait_and_click(self.MY_INFO_BUTTON)
 
     @allure.step("Verify that the 'My Info' URL is loaded")
     def verify_my_info_url(self, expected_url: str) -> None:
