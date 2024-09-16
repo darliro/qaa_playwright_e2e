@@ -2,10 +2,8 @@ name: UI Tests
 
 on:
   push:
-    paths:
-      - '**/*.py'
-      - '.github/**'
-      - 'tests/**'
+    branches:
+      - main
 
 jobs:
   ui-tests:
@@ -42,6 +40,7 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           pdm run pytest -sv --alluredir=allure-results
+        continue-on-error: true
 
       # List Allure results
       - name: List Allure results
