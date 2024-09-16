@@ -2,6 +2,7 @@ import os
 import pytest
 from playwright.sync_api import sync_playwright, Page, Browser, BrowserContext
 
+
 @pytest.fixture(scope="session")
 def browser() -> Browser:
     """Launches the browser with headless or headed mode."""
@@ -11,12 +12,14 @@ def browser() -> Browser:
         yield browser
         browser.close()
 
+
 @pytest.fixture(scope="session")
 def browser_context(browser: Browser) -> BrowserContext:
     """Creates a new browser context with no viewport setting."""
     context: BrowserContext = browser.new_context(no_viewport=True)
     yield context
     context.close()
+
 
 @pytest.fixture()
 def page(browser_context: BrowserContext) -> Page:
