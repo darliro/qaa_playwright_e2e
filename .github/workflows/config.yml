@@ -31,11 +31,11 @@ jobs:
       - name: Install Allure
         run: |
           sudo apt-get update
-          sudo apt-get install -y allure
-
-      # Add Allure to PATH
-      - name: Add Allure to PATH
-        run: echo "/usr/bin/allure" >> $GITHUB_PATH
+          sudo apt-get install -y openjdk-17-jre
+          curl -o allure.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.30.0/allure-commandline-2.30.0.tgz
+          tar -zxvf allure.tgz -C /opt/
+          sudo ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure
+          rm allure.tgz
 
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
