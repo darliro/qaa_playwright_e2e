@@ -23,8 +23,7 @@ jobs:
 
       # Set environment variable to headless mode
       - name: Set headless mode
-        env:
-          HEADLESS: true
+        run: echo "HEADLESS=true" >> $GITHUB_ENV
 
       # Install Allure
       - name: Install Allure
