@@ -33,6 +33,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y allure
 
+      # Add Allure to PATH
+      - name: Add Allure to PATH
+        run: echo "/usr/bin/allure" >> $GITHUB_PATH
+
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
         env:
@@ -47,7 +51,7 @@ jobs:
 
       # Generate Allure report
       - name: Generate Allure report
-        run: pdm run allure generate allure-results --clean -o allure-report
+        run: allure generate allure-results --clean -o allure-report
 
       # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
