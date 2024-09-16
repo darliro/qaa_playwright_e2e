@@ -27,6 +27,12 @@ jobs:
       - name: Set headless mode
         run: echo "HEADLESS=true" >> $GITHUB_ENV
 
+      # Install Allure
+      - name: Install Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y allure
+
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
         env:
