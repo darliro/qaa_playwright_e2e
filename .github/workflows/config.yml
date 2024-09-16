@@ -15,17 +15,16 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v3
 
-      # Install Python dependencies with PDM
-      - name: Install PDM
-        run: pip install pdm && pdm install --prod --no-self --no-editable
-
-      # Install Playwright browsers
-      - name: Install Playwright
-        run: pdm run playwright install --with-deps
+      # Install dependencies and Playwright browsers
+      - name: Install dependencies and Playwright
+        run: |
+          pip install pdm && pdm install --prod --no-self --no-editable
+          pdm run playwright install chromium
 
       # Set environment variable to headless mode
       - name: Set headless mode
-        run: echo "HEADLESS=true" >> $GITHUB_ENV
+        env:
+          HEADLESS: true
 
       # Install Allure
       - name: Install Allure
