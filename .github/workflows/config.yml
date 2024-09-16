@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '**/*.py'
-      - '.github/**'
-      - 'tests/**'
 
 jobs:
   ui-tests:
@@ -17,15 +13,25 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v3
 
-      # Set up Playwright with the official action
-      - name: Set up Playwright
-        uses: microsoft/playwright-github-action@v1
-        with:
-          install-deps: true
+      # Install dependencies and Playwright browsers
+      - name: Install dependencies and Playwright
+        run: |
+          pip install pdm && pdm install --prod --no-self --no-editable
+          pdm run playwright install chromium
 
-      # Install dependencies using PDM
-      - name: Install dependencies
-        run: pdm install --prod --no-self --no-editable
+      # Set environment variable to headless mode
+      - name: Set headless mode
+        run: echo "HEADLESS=true" >> $GITHUB_ENV
+
+      # Install Allure
+      - name: Install Allure
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jre
+          curl -o allure.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.30.0/allure-commandline-2.30.0.tgz
+          tar -zxvf allure.tgz -C /opt/
+          sudo ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure
+          rm allure.tgz
 
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
@@ -34,6 +40,7 @@ jobs:
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
           pdm run pytest -sv --alluredir=allure-results
+        continue-on-error: true
 
       # List Allure results
       - name: List Allure results

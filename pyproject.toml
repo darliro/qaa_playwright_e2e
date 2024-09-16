@@ -62,4 +62,3 @@ markers = [
     "smoke: mark a test as a smoke test",
     "regression: mark a test as a regression test"
 ]
-addopts = "--headed --alluredir=allure-results --tb=long -v"

@@ -37,7 +37,7 @@ class BasePage:
 
     @allure.step("Waiting for spinner to be hidden: {spinner_locator}")
     def wait_for_spinner(
-            self, spinner_locator: str = ".oxd-loading-spinner", timeout: int = 10000
+        self, spinner_locator: str = ".oxd-loading-spinner", timeout: int = 10000
     ) -> None:
         spinner = self.page.locator(spinner_locator)
         expect(spinner).to_be_hidden(timeout=timeout)

@@ -21,10 +21,11 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Allure
-RUN curl -o allure.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.30.0/allure-commandline-2.30.0.tgz && \
-    tar -zxvf allure.tgz -C /opt/ && \
-    ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure && \
-    rm allure.tgz
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jre \
+    allure \
+    curl \
+    && apt-get clean
 
 WORKDIR /usr/workspace
 
