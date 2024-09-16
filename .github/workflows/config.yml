@@ -33,7 +33,7 @@ jobs:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
-          xvfb-run -a pdm run pytest -sv --alluredir=allure-results --log-cli-level=DEBUG
+          pdm run pytest -sv --alluredir=allure-results
 
       # List Allure results
       - name: List Allure results
