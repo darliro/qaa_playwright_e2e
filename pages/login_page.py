@@ -1,15 +1,14 @@
 import allure
-from playwright.sync_api import expect
 from base.base_page import BasePage
-from config.link_config import Links
+from config.url_config import Links
 from config.selectors_config import LOGIN_PAGE
 
 
 class LoginPage(BasePage):
     PAGE_URL = Links.LOGIN_PAGE
 
-    USERNAME_FIELD: str = LOGIN_PAGE["username_field"]
-    PASSWORD_FIELD: str = LOGIN_PAGE["password_field"]
+    USERNAME_FIELD: str = LOGIN_PAGE["username_input"]
+    PASSWORD_FIELD: str = LOGIN_PAGE["password_input"]
     SUBMIT_BUTTON: str = LOGIN_PAGE["submit_button"]
 
     @allure.step("Enter login: {login}")
@@ -24,6 +23,6 @@ class LoginPage(BasePage):
     def click_submit_button(self) -> None:
         self.page.locator(self.SUBMIT_BUTTON).click()
 
-    @allure.step("Verify successful login to {expected_url}")
-    def verify_successful_login(self, expected_url: str) -> None:
-        expect(self.page).to_have_url(expected_url)
+    @allure.step("Verify 'Dashboard' page is loaded")
+    def verify_dashboard_page_loaded(self) -> None:
+        self.verify_url(expected_url=Links.DASHBOARD_PAGE)
