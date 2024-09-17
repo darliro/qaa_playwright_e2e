@@ -1,7 +1,6 @@
 import allure
-from playwright.sync_api import expect
 from base.base_page import BasePage
-from config.link_config import Links
+from config.url_config import Links
 from config.selectors_config import DASHBOARD_PAGE
 
 
@@ -14,6 +13,6 @@ class DashboardPage(BasePage):
     def click_my_info_link(self) -> None:
         self.page.locator(self.MY_INFO_BUTTON).click()
 
-    @allure.step("Verify that the 'My Info' URL is loaded")
-    def verify_my_info_url(self, expected_url: str) -> None:
-        expect(self.page).to_have_url(expected_url)
+    @allure.step("Verify 'My Info' page is loaded")
+    def verify_my_info_page_loaded(self) -> None:
+        self.verify_url(expected_url=Links.PERSONAL_PAGE)
