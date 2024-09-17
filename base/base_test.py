@@ -8,11 +8,15 @@ from playwright.sync_api import Page
 
 class BaseTest:
     @pytest.fixture(autouse=True)
-    def setup(self, page: Page) -> None:
+    def setup(self, page: Page, request) -> None:
         """
         Runs automatically and initializes data and the necessary page objects.
         """
-        self.data: Data = Data()
-        self.login_page: LoginPage = LoginPage(page)
-        self.dashboard_page: DashboardPage = DashboardPage(page)
-        self.personal_page: PersonalPage = PersonalPage(page)
+        self.data = Data()
+        self.login_page = LoginPage(page)
+        self.dashboard_page = DashboardPage(page)
+        self.personal_page = PersonalPage(page)
+
+        yield
+        if request.node.rep_call.failed:
+            page.screenshot(path="screenshots/test_failed.png")
