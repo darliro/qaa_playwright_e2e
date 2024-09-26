@@ -1,2 +1,2 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","10382","Change Profile Name","tests","Mon Sep 16 01:53:58 UTC 2024","passed","Mon Sep 16 01:54:09 UTC 2024","TestProfileFeature","profile_change_test","",""
+"","33624","Change Profile Name","tests","Thu Sep 26 21:48:01 UTC 2024","broken","Thu Sep 26 21:48:35 UTC 2024","TestProfileFeature","profile_change_test","",""
