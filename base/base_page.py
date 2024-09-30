@@ -9,8 +9,6 @@ class BasePage:
     @allure.step("Opening page: {url}")
     def open_page(self, url: str = None) -> None:
         target_url: str = url or getattr(self, "PAGE_URL", None)
-        if not target_url:
-            raise ValueError("No URL provided for the page to open.")
         self.page.goto(target_url, wait_until="load")
 
     @allure.step("Verify URL is {expected_url}")
