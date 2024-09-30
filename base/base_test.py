@@ -16,7 +16,3 @@ class BaseTest:
         self.login_page = LoginPage(page)
         self.dashboard_page = DashboardPage(page)
         self.personal_page = PersonalPage(page)
-
-        yield
-        if request.node.rep_call.failed:
-            page.screenshot(path="screenshots/test_failed.png")
