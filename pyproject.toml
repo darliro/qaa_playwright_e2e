@@ -5,7 +5,7 @@ description = "Default template for PDM package"
 authors = [
     {name = "darli.ro", email = "glicerinn@gmail.com"},
 ]
-requires-python = "==3.12.*"
+requires-python = "==3.13.*"
 readme = "README.md"
 license = {text = "MIT"}
 
@@ -48,7 +48,7 @@ dependencies = [
     "typing_extensions",
     "urllib3",
     "virtualenv",
-    "wsproto"
+    "wsproto",
 ]
 
 [tool.pdm]

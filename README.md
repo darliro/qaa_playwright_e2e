@@ -1,9 +1,9 @@
-[![Python 3.12+](https://img.shields.io/badge/Python-3.12+-black.svg)](https://www.python.org/)
+[![Python 3.13+](https://img.shields.io/badge/Python-3.13+-black.svg)](https://www.python.org/)
 [![PyTest](https://img.shields.io/badge/PyTest-blue?logo=pytest)](https://pytest.org/)
 [![Playwright](https://img.shields.io/badge/Playwright-green?logo=playwright)](https://playwright.dev/)
 [![Allure TestOps](https://img.shields.io/badge/Allure-blueviolet?logo=allure)](https://docs.qameta.io/allure-testops/)
 
-## AQAQUEST Project with E2E Tests
+## E2E Test Automation Project for HRM System
 ### by DarliRo
 This project is for writing and running automated tests using **Pytest** & **Playwright** (TBD)
 
