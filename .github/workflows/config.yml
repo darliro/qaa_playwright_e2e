@@ -13,15 +13,16 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v3
 
-      # Set up Python and create virtual environment
-      - name: Set up Python and Create Virtual Environment
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
+      # Setup Python version and create virtual environment
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
 
       # Install dependencies and Playwright browsers
       - name: Install dependencies and Playwright
         run: |
+          python -m venv .venv
           source .venv/bin/activate
           pip install pdm
           pdm install --prod --no-self --no-editable
