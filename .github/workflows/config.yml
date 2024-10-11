@@ -13,10 +13,18 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v3
 
+      # Set up Python and create virtual environment
+      - name: Set up Python and Create Virtual Environment
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+
       # Install dependencies and Playwright browsers
       - name: Install dependencies and Playwright
         run: |
-          pip install pdm && pdm install --prod --no-self --no-editable
+          source .venv/bin/activate
+          pip install pdm
+          pdm install --prod --no-self --no-editable
           pdm run playwright install chromium
 
       # Set environment variable to headless mode
@@ -39,6 +47,7 @@ jobs:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
         run: |
+          source .venv/bin/activate
           pdm run pytest -sv --alluredir=allure-results
         continue-on-error: true
 
