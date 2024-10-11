@@ -13,16 +13,27 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v3
 
-      # Setup Python version and create virtual environment
+      # Setup Python version
       - name: Set up Python 3.13
         uses: actions/setup-python@v4
         with:
           python-version: '3.13'
 
-      # Install dependencies and Playwright browsers
-      - name: Install dependencies and Playwright
+      # Set up virtual environment
+      - name: Set up virtual environment
         run: |
           python -m venv .venv
+          source .venv/bin/activate
+
+      # Install greenlet via pip
+      - name: Install greenlet via pip
+        run: |
+          source .venv/bin/activate
+          pip install greenlet>=3.1.1
+
+      # Install dependencies via PDM and Playwright browsers
+      - name: Install dependencies and Playwright
+        run: |
           source .venv/bin/activate
           pip install pdm
           pdm install --prod --no-self --no-editable
