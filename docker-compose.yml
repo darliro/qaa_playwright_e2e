@@ -5,14 +5,13 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./tests:/usr/workspace/tests
-      - ./allure-results:/usr/workspace/allure-results
+      - ./:/usr/workspace
     command: pdm run pytest -sv --alluredir=allure-results
     working_dir: /usr/workspace
     environment:
-      - ENV=docker
-      - LOGIN=${LOGIN}
-      - PASSWORD=${PASSWORD}
+      ENV: docker
+      LOGIN: ${LOGIN}
+      PASSWORD: ${PASSWORD}
     env_file:
       - .env
 

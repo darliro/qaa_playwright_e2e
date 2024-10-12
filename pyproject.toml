@@ -56,7 +56,6 @@ distribution = false
 install_browsers = "playwright install"
 
 [tool.pytest.ini_options]
-asyncio_default_fixture_loop_scope = "function"
 markers = [
     "smoke: mark for a smoke test",
     "regression: mark for a regression test"

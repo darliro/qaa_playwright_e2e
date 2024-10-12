@@ -1,42 +1,25 @@
-FROM python:3.12-slim
+FROM python:3.13-slim
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    curl \
-    libnss3 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libxcomposite1 \
-    libxrandr2 \
-    libxdamage1 \
-    libxkbcommon0 \
-    libgbm1 \
-    libasound2 \
-    libgtk-3-0 \
-    libdrm2 \
-    libxshmfence1 \
-    ca-certificates \
-    --no-install-recommends && \
-    apt-get clean && rm -rf /var/lib/apt/lists/*
+# Install system dependencies and Allure
+RUN apt-get update && apt-get install -y openjdk-17-jre curl && \
+    apt-get clean && \
+    curl -o allure-2.30.0.tgz -L https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.tgz && \
+    tar -zxvf allure-2.30.0.tgz -C /opt/ && \
+    ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure && \
+    rm allure-2.30.0.tgz && \
+    apt-get clean
 
-# Install Allure
-RUN apt-get update && apt-get install -y \
-    openjdk-17-jre \
-    allure \
-    curl \
-    && apt-get clean
-
+# Set the working directory for the project
 WORKDIR /usr/workspace
 
-# Copy the dependencies file to the working directory
+# Copy the dependencies into the working directory
 COPY ./pyproject.toml ./pdm.lock /usr/workspace/
 
 # Install Python dependencies with PDM
 RUN pip install pdm && pdm install --prod --no-self --no-editable
 
-# Install Playwright browsers
-RUN pdm run playwright install --with-deps
+# Install Playwright browsers using the virtual environment
+RUN pdm run playwright install chromium --with-deps
 
 # Default command to run the tests
 CMD ["pdm", "run", "pytest", "-sv", "--alluredir=allure-results"]
