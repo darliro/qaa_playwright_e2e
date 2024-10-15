@@ -1,6 +1,6 @@
 FROM python:3.13-slim
 
-# Install system dependencies and Allure
+# Install system packages and Allure
 RUN apt-get update && apt-get install -y openjdk-17-jre curl && \
     apt-get clean && \
     curl -o allure-2.30.0.tgz -L https://github.com/allure-framework/allure2/releases/download/2.30.0/allure-2.30.0.tgz && \

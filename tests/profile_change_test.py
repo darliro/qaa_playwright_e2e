@@ -8,7 +8,12 @@ class TestProfileFeature(BaseTest):
     @allure.severity("Critical")
     @pytest.mark.smoke
     def test_change_profile_name(
-        self, page, random_first_name, random_last_name, random_middle_name
+        self,
+        page,
+        random_first_name,
+        random_last_name,
+        random_middle_name,
+        random_id,
     ):
         with allure.step("Login and navigate to dashboard"):
             self.login_page.open_page()
@@ -25,12 +30,16 @@ class TestProfileFeature(BaseTest):
             self.personal_page.update_first_name(random_first_name)
             self.personal_page.update_last_name(random_last_name)
             self.personal_page.update_middle_name(random_middle_name)
+            self.personal_page.update_employee_id(random_id)
+            self.personal_page.update_other_id(random_id)
             self.personal_page.click_save_button()
 
         with allure.step("Verify profile information update"):
             self.personal_page.verify_first_name_is_updated(random_first_name)
             self.personal_page.verify_last_name_is_updated(random_last_name)
             self.personal_page.verify_middle_name_is_updated(random_middle_name)
+            self.personal_page.verify_employee_id_is_updated(random_id)
+            self.personal_page.verify_other_id_is_updated(random_id)
 
         with allure.step("Capture screenshot after update"):
             self.personal_page.make_screenshot("Profile_info_change_success")
