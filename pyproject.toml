@@ -49,9 +49,6 @@ dependencies = [
     "wsproto",
 ]
 
-[tool.pdm.dependencies]
-greenlet = {version = "*", optional = true, markers = "false"}
-
 [tool.pdm]
 distribution = false
 
