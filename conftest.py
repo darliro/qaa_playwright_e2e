@@ -24,3 +24,11 @@ def random_middle_name() -> str:
     Fixture to generate a random middle name.
     """
     return Faker().name_nonbinary()
+
+
+@pytest.fixture(scope="function")
+def random_id() -> str:
+    """
+    Fixture to generate a random ID with a maximum of 10 characters.
+    """
+    return Faker().bothify(text="??????????")

@@ -1,52 +1,61 @@
 import allure
-from playwright.sync_api import expect
 from base.base_page import BasePage
 from config.url_config import Links
-from config.selectors_config import PERSONAL_PAGE
 
 
 class PersonalPage(BasePage):
-    PAGE_URL: str = Links.PERSONAL_PAGE
+    PAGE_URL = Links.PERSONAL_PAGE
 
-    FIRST_NAME_INPUT: str = PERSONAL_PAGE["first_name_input"]
-    LAST_NAME_INPUT: str = PERSONAL_PAGE["last_name_input"]
-    MIDDLE_NAME_INPUT: str = PERSONAL_PAGE["middle_name_input"]
-    EMPLOYEE_ID_INPUT: str = PERSONAL_PAGE["employee_id_input"]
-    OTHER_ID_INPUT: str = PERSONAL_PAGE["other_id_input"]
-    DRIVERS_LICENSE_NUMBER_INPUT: str = PERSONAL_PAGE["drivers_license_number_input"]
-    LICENSE_EXPIRY_DATE_ICON: str = PERSONAL_PAGE["license_expiry_date_icon"]
-    NATIONALITY_ICON: str = PERSONAL_PAGE["nationality_icon"]
-    MARITAL_STATUS_ICON: str = PERSONAL_PAGE["marital_status_icon"]
-    DATE_OF_BIRTH_ICON: str = PERSONAL_PAGE["date_of_birth_icon"]
-    GENDER_RADIO: str = PERSONAL_PAGE["gender_radio"]
-    SAVE_BUTTON: str = PERSONAL_PAGE["save_button"]
-    SPINNER: str = PERSONAL_PAGE["loading_spinner"]
+    FIRST_NAME_INPUT = "input[name='firstName']"
+    LAST_NAME_INPUT = "input[name='lastName']"
+    MIDDLE_NAME_INPUT = "input[name='middleName']"
+    EMPLOYEE_ID_INPUT = "//label[text()='Employee Id']/following::input[1]"
+    OTHER_ID_INPUT = "//label[text()='Other Id']/following::input[1]"
+    SAVE_BUTTON = "//p[contains(@class, 'orangehrm-form-hint')]/following-sibling::button[@type='submit']"
+    LOADING_SPINNER = ".oxd-loading-spinner"
 
-    @allure.step("Update first name to '{new_name}'")
-    def update_first_name(self, new_name: str) -> None:
-        self.fill_field(self.FIRST_NAME_INPUT, new_name)
+    @allure.step("Update first name to '{new_first_name}'")
+    def update_first_name(self, new_first_name: str) -> None:
+        self.fill_field(self.FIRST_NAME_INPUT, new_first_name)
 
-    @allure.step("Update last name to '{new_name}'")
-    def update_last_name(self, new_name: str) -> None:
-        self.fill_field(self.LAST_NAME_INPUT, new_name)
+    @allure.step("Update last name to '{new_last_name}'")
+    def update_last_name(self, new_last_name: str) -> None:
+        self.fill_field(self.LAST_NAME_INPUT, new_last_name)
 
-    @allure.step("Update middle_name to '{new_name}'")
-    def update_middle_name(self, new_name: str) -> None:
-        self.fill_field(self.MIDDLE_NAME_INPUT, new_name)
+    @allure.step("Update middle name to '{new_middle_name}'")
+    def update_middle_name(self, new_middle_name: str) -> None:
+        self.fill_field(self.MIDDLE_NAME_INPUT, new_middle_name)
+
+    @allure.step("Update Employee ID to '{new_employee_id}'")
+    def update_employee_id(self, new_employee_id: str) -> None:
+        self.fill_field(self.EMPLOYEE_ID_INPUT, new_employee_id)
+
+    @allure.step("Update Other ID to '{new_other_id}'")
+    def update_other_id(self, new_other_id: str) -> None:
+        self.fill_field(self.OTHER_ID_INPUT, new_other_id)
 
     @allure.step("Click 'Save' button")
     def click_save_button(self) -> None:
+        self.wait_for_element(self.SAVE_BUTTON)
         self.page.locator(self.SAVE_BUTTON).click()
-        self.wait_for_element(self.SPINNER, state="hidden")
+        self.wait_for_element(self.LOADING_SPINNER, state="hidden")
 
     @allure.step("Verify first name is updated to '{expected_name}'")
     def verify_first_name_is_updated(self, expected_name: str) -> None:
-        expect(self.page.locator(self.FIRST_NAME_INPUT)).to_have_value(expected_name)
+        self.verify_field_value(self.FIRST_NAME_INPUT, expected_name)
 
     @allure.step("Verify last name is updated to '{expected_name}'")
     def verify_last_name_is_updated(self, expected_name: str) -> None:
-        expect(self.page.locator(self.LAST_NAME_INPUT)).to_have_value(expected_name)
+        self.verify_field_value(self.LAST_NAME_INPUT, expected_name)
 
-    @allure.step("Verify middle_name is updated to '{expected_name}'")
+    @allure.step("Verify middle name is updated to '{expected_name}'")
     def verify_middle_name_is_updated(self, expected_name: str) -> None:
-        expect(self.page.locator(self.MIDDLE_NAME_INPUT)).to_have_value(expected_name)
+        self.verify_field_value(self.MIDDLE_NAME_INPUT, expected_name)
+
+    @allure.step("Verify employee ID is updated to '{expected_employee_id}'")
+    def verify_employee_id_is_updated(self, expected_employee_id: str) -> None:
+        self.verify_field_value(self.EMPLOYEE_ID_INPUT, expected_employee_id)
+
+    @allure.step("Verify other ID is updated to '{expected_other_id}'")
+    def verify_other_id_is_updated(self, expected_other_id: str) -> None:
+        self.verify_field_value(self.OTHER_ID_INPUT, expected_other_id)
