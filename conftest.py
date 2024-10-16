@@ -26,9 +26,6 @@ def random_middle_name() -> str:
     return Faker().name_nonbinary()
 
 
-import pytest
-
-
 @pytest.fixture(scope="function")
 def random_id() -> str:
     """
