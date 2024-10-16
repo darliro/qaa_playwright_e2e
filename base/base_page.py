@@ -22,22 +22,25 @@ class BasePage:
             screenshot, name=screenshot_name, attachment_type=allure.attachment_type.PNG
         )
 
+    @allure.step("Waiting for element: {locator}")
+    def wait_for_element(
+        self, locator: str, state: str = "visible", timeout: int = 10000
+    ) -> None:
+        self.page.wait_for_selector(locator, state=state, timeout=timeout)
+
     @allure.step("Filling field: {locator}")
     def fill_field(self, locator: str, value: str) -> None:
+        self.wait_for_element(locator)
         element = self.page.locator(locator)
         element.click()
         element.fill("")
         element.fill(value)
 
-    @allure.step("Waiting for element {locator} to reach state '{state}'")
-    def wait_for_element(
-        self, locator: str, state: str = "visible", timeout: int = 10000
+    @allure.step("Verify element value: {locator}")
+    def verify_field_value(
+        self, locator: str, expected_value: str, timeout: int = 10000
     ) -> None:
-        element = self.page.locator(locator)
-
-        if state == "visible":
-            expect(element).to_be_visible(timeout=timeout)
-        elif state == "hidden":
-            expect(element).to_be_hidden(timeout=timeout)
-        else:
-            raise ValueError(f"Unsupported state: {state}")
+        self.wait_for_element(locator)
+        expect(self.page.locator(locator)).to_have_value(
+            expected_value, timeout=timeout
+        )
