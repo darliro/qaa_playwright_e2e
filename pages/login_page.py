@@ -8,14 +8,15 @@ class LoginPage(BasePage):
 
     @allure.step("Enter login: {login}")
     def enter_login(self, login: str) -> None:
-        self.page.get_by_placeholder("Username").fill(login)
+        self.fill_field("input[placeholder='Username']", login)
 
     @allure.step("Enter password")
     def enter_password(self, password: str) -> None:
-        self.page.get_by_placeholder("Password").fill(password)
+        self.fill_field("input[placeholder='Password']", password)
 
     @allure.step("Click submit button")
     def click_submit_button(self) -> None:
+        self.wait_for_element("button[type='submit']")
         self.page.get_by_role("button", name="Login").click()
 
     @allure.step("Verify 'Dashboard' page is loaded")
