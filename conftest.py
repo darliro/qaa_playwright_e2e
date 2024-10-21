@@ -1,34 +1,27 @@
 import pytest
 from faker import Faker
+from datetime import datetime
+
+faker = Faker()
+
+DATA_GENERATORS = {
+    "first_name": lambda: faker.unique.first_name(),
+    "last_name": lambda: faker.unique.last_name(),
+    "middle_name": lambda: faker.name_nonbinary(),
+    "id": lambda: faker.unique.bothify(text="??????????"),
+    "date": lambda: datetime.now().strftime("%Y-%d-%m"),
+}
 
 
 @pytest.fixture(scope="function")
-def random_first_name() -> str:
+def data_generator():
     """
-    Fixture to generate a random first name.
+    Universal factory to generate different types of test data.
     """
-    return Faker().first_name()
 
+    def _generate(data_type: str) -> str:
+        if data_type not in DATA_GENERATORS:
+            raise ValueError(f"Unknown data type: {data_type}")
+        return DATA_GENERATORS[data_type]()
 
-@pytest.fixture(scope="function")
-def random_last_name() -> str:
-    """
-    Fixture to generate a random last name.
-    """
-    return Faker().last_name()
-
-
-@pytest.fixture(scope="function")
-def random_middle_name() -> str:
-    """
-    Fixture to generate a random middle name.
-    """
-    return Faker().name_nonbinary()
-
-
-@pytest.fixture(scope="function")
-def random_id() -> str:
-    """
-    Fixture to generate a random ID with a maximum of 10 characters.
-    """
-    return Faker().bothify(text="??????????")
+    return _generate
