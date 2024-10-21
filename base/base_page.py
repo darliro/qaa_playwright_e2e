@@ -22,6 +22,11 @@ class BasePage:
             screenshot, name=screenshot_name, attachment_type=allure.attachment_type.PNG
         )
 
+    @allure.step("Waiting for element and performing action: {locator}")
+    def wait_and_perform(self, locator: str, action: callable) -> None:
+        self.wait_for_element(locator)
+        action(self.page.locator(locator))
+
     @allure.step("Waiting for element: {locator}")
     def wait_for_element(
         self, locator: str, state: str = "visible", timeout: int = 10000
@@ -30,17 +35,18 @@ class BasePage:
 
     @allure.step("Filling field: {locator}")
     def fill_field(self, locator: str, value: str) -> None:
-        self.wait_for_element(locator)
-        element = self.page.locator(locator)
-        element.click()
-        element.fill("")
-        element.fill(value)
+        self.wait_and_perform(
+            locator, lambda element: element.click() or element.fill(value)
+        )
+
+    @allure.step("Clicking element: {locator}")
+    def click_element(self, locator: str) -> None:
+        self.wait_and_perform(locator, lambda element: element.click())
 
     @allure.step("Verify element value: {locator}")
     def verify_field_value(
         self, locator: str, expected_value: str, timeout: int = 10000
     ) -> None:
-        self.wait_for_element(locator)
         expect(self.page.locator(locator)).to_have_value(
             expected_value, timeout=timeout
         )

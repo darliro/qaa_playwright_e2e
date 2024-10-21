@@ -16,8 +16,7 @@ class LoginPage(BasePage):
 
     @allure.step("Click submit button")
     def click_submit_button(self) -> None:
-        self.wait_for_element("button[type='submit']")
-        self.page.get_by_role("button", name="Login").click()
+        self.click_element("button[type='submit']")
 
     @allure.step("Verify 'Dashboard' page is loaded")
     def verify_dashboard_page_loaded(self) -> None:

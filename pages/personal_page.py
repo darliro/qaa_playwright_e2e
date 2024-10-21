@@ -11,6 +11,11 @@ class PersonalPage(BasePage):
     MIDDLE_NAME_INPUT = "input[name='middleName']"
     EMPLOYEE_ID_INPUT = "//label[text()='Employee Id']/following::input[1]"
     OTHER_ID_INPUT = "//label[text()='Other Id']/following::input[1]"
+    DRIVERS_LICENSE_NUMBER_INPUT = (
+        '//label[text()="Driver\'s License Number"]/following::input[1]'
+    )
+    LICENSE_EXPIRY_DATE_INPUT = "(//input[@placeholder='yyyy-dd-mm'])[1]"
+    TODAY_DATEPICKER = "div.oxd-date-input-link.--today"
     SAVE_BUTTON = "//p[contains(@class, 'orangehrm-form-hint')]/following-sibling::button[@type='submit']"
     LOADING_SPINNER = ".oxd-loading-spinner"
 
@@ -34,10 +39,22 @@ class PersonalPage(BasePage):
     def update_other_id(self, new_other_id: str) -> None:
         self.fill_field(self.OTHER_ID_INPUT, new_other_id)
 
+    @allure.step("Update Driver's License Number to '{new_drivers_license_number}'")
+    def update_drivers_license_number(self, new_drivers_license_number: str) -> None:
+        self.fill_field(self.DRIVERS_LICENSE_NUMBER_INPUT, new_drivers_license_number)
+
+    @allure.step("Set expiry date to today")
+    def set_expiry_date_to_today(self) -> None:
+        self.click_element(self.LICENSE_EXPIRY_DATE_INPUT)
+        self.select_today_date()
+
+    @allure.step("Select 'Today' in date picker")
+    def select_today_date(self) -> None:
+        self.click_element(self.TODAY_DATEPICKER)
+
     @allure.step("Click 'Save' button")
     def click_save_button(self) -> None:
-        self.wait_for_element(self.SAVE_BUTTON)
-        self.page.locator(self.SAVE_BUTTON).click()
+        self.click_element(self.SAVE_BUTTON)
         self.wait_for_element(self.LOADING_SPINNER, state="hidden")
 
     @allure.step("Verify first name is updated to '{expected_name}'")
@@ -59,3 +76,17 @@ class PersonalPage(BasePage):
     @allure.step("Verify other ID is updated to '{expected_other_id}'")
     def verify_other_id_is_updated(self, expected_other_id: str) -> None:
         self.verify_field_value(self.OTHER_ID_INPUT, expected_other_id)
+
+    @allure.step(
+        "Verify driver's license number is updated to '{expected_drivers_license_number}'"
+    )
+    def verify_drivers_license_number_is_updated(
+        self, expected_drivers_license_number: str
+    ) -> None:
+        self.verify_field_value(
+            self.DRIVERS_LICENSE_NUMBER_INPUT, expected_drivers_license_number
+        )
+
+    @allure.step("Verify license expiry date is updated to '{expected_expiry_date}'")
+    def verify_license_expiry_date_is_updated(self, expected_expiry_date: str) -> None:
+        self.verify_field_value(self.LICENSE_EXPIRY_DATE_INPUT, expected_expiry_date)
