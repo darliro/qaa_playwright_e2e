@@ -31,7 +31,7 @@ jobs:
           source .venv/bin/activate
           pip install greenlet==3.1.1
 
-      # Install dependencies via PDM and Playwright browsers
+      # Install dependencies via PDM and Playwright Chromium
       - name: Install dependencies and Playwright
         run: |
           source .venv/bin/activate
@@ -39,19 +39,12 @@ jobs:
           pdm install --prod --no-self --no-editable
           pdm run playwright install chromium
 
-      # Set environment variable to headless mode
-      - name: Set headless mode
-        run: echo "HEADLESS=true" >> $GITHUB_ENV
-
       # Install Allure
       - name: Install Allure
         run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-17-jre
-          curl -o allure.tgz -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.30.0/allure-commandline-2.30.0.tgz
-          tar -zxvf allure.tgz -C /opt/
+          sudo apt-get update && sudo apt-get install -y openjdk-17-jre
+          curl -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.30.0/allure-commandline-2.30.0.tgz | tar -xz -C /opt/
           sudo ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure
-          rm allure.tgz
 
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
