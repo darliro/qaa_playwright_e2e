@@ -14,6 +14,7 @@ class TestProfileFeature(BaseTest):
         other_id = data_generator("id")
         drivers_license_number = data_generator("id")
         expiry_date = data_generator("date")
+        nationality = data_generator("nationality")
 
         with allure.step("Login and navigate to dashboard"):
             self.login_page.open_page()
@@ -34,6 +35,7 @@ class TestProfileFeature(BaseTest):
             self.personal_page.update_other_id(other_id)
             self.personal_page.update_drivers_license_number(drivers_license_number)
             self.personal_page.set_expiry_date_to_today()
+            self.personal_page.update_nationality_to_second_option()
             self.personal_page.click_save_button()
 
         with allure.step("Verify profile information update"):
@@ -46,6 +48,7 @@ class TestProfileFeature(BaseTest):
                 drivers_license_number
             )
             self.personal_page.verify_license_expiry_date_is_updated(expiry_date)
+            self.personal_page.verify_nationality_is_updated(nationality)
 
         with allure.step("Capture screenshot after update"):
             self.personal_page.make_screenshot("Profile_info_change_success")
