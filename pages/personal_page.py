@@ -16,9 +16,17 @@ class PersonalPage(BasePage):
     )
     LICENSE_EXPIRY_DATE_INPUT = "(//input[@placeholder='yyyy-dd-mm'])[1]"
     TODAY_DATEPICKER = "div.oxd-date-input-link.--today"
+
     NATIONALITY_DROPDOWN_BUTTON = "(//i[contains(@class, 'oxd-select-text--arrow')])[1]"
     SECOND_OPTION_IN_NATIONALITY_LIST = "(//div[@role='option'])[2]"
     SELECTED_NATIONALITY_TEXT = "(//div[@class='oxd-select-text-input'])[1]"
+
+    MARITAL_STATUS_DROPDOWN_BUTTON = (
+        "(//i[contains(@class, 'oxd-select-text--arrow')])[2]"
+    )
+    SECOND_OPTION_IN_MARITAL_STATUS_LIST = "(//div[@role='option'])[2]"
+    SELECTED_MARITAL_STATUS_TEXT = "(//div[@class='oxd-select-text-input'])[2]"
+
     SAVE_BUTTON = "//p[contains(@class, 'orangehrm-form-hint')]/following-sibling::button[@type='submit']"
     LOADING_SPINNER = ".oxd-loading-spinner"
 
@@ -59,6 +67,11 @@ class PersonalPage(BasePage):
     def update_nationality_to_second_option(self) -> None:
         self.click_element(self.NATIONALITY_DROPDOWN_BUTTON)
         self.click_element(self.SECOND_OPTION_IN_NATIONALITY_LIST)
+
+    @allure.step("Update marital status to the second option in the list")
+    def update_marital_status_to_second_option(self) -> None:
+        self.click_element(self.MARITAL_STATUS_DROPDOWN_BUTTON)
+        self.click_element(self.SECOND_OPTION_IN_MARITAL_STATUS_LIST)
 
     @allure.step("Click 'Save' button")
     def click_save_button(self) -> None:
@@ -102,3 +115,7 @@ class PersonalPage(BasePage):
     @allure.step("Verify selected nationality is '{expected_value}'")
     def verify_nationality_is_updated(self, expected_value: str) -> None:
         self.verify_dropdown_value(self.SELECTED_NATIONALITY_TEXT, expected_value)
+
+    @allure.step("Verify selected nationality is '{expected_value}'")
+    def verify_marital_status_is_updated(self, expected_value: str) -> None:
+        self.verify_dropdown_value(self.SELECTED_MARITAL_STATUS_TEXT, expected_value)
