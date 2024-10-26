@@ -16,6 +16,9 @@ class PersonalPage(BasePage):
     )
     LICENSE_EXPIRY_DATE_INPUT = "(//input[@placeholder='yyyy-dd-mm'])[1]"
     TODAY_DATEPICKER = "div.oxd-date-input-link.--today"
+    NATIONALITY_DROPDOWN_BUTTON = "(//i[contains(@class, 'oxd-select-text--arrow')])[1]"
+    SECOND_OPTION_IN_NATIONALITY_LIST = "(//div[@role='option'])[2]"
+    SELECTED_NATIONALITY_TEXT = "(//div[@class='oxd-select-text-input'])[1]"
     SAVE_BUTTON = "//p[contains(@class, 'orangehrm-form-hint')]/following-sibling::button[@type='submit']"
     LOADING_SPINNER = ".oxd-loading-spinner"
 
@@ -51,6 +54,11 @@ class PersonalPage(BasePage):
     @allure.step("Select 'Today' in date picker")
     def select_today_date(self) -> None:
         self.click_element(self.TODAY_DATEPICKER)
+
+    @allure.step("Update nationality to the second option in the list")
+    def update_nationality_to_second_option(self) -> None:
+        self.click_element(self.NATIONALITY_DROPDOWN_BUTTON)
+        self.click_element(self.SECOND_OPTION_IN_NATIONALITY_LIST)
 
     @allure.step("Click 'Save' button")
     def click_save_button(self) -> None:
@@ -90,3 +98,7 @@ class PersonalPage(BasePage):
     @allure.step("Verify license expiry date is updated to '{expected_expiry_date}'")
     def verify_license_expiry_date_is_updated(self, expected_expiry_date: str) -> None:
         self.verify_field_value(self.LICENSE_EXPIRY_DATE_INPUT, expected_expiry_date)
+
+    @allure.step("Verify selected nationality is '{expected_value}'")
+    def verify_nationality_is_updated(self, expected_value: str) -> None:
+        self.verify_dropdown_value(self.SELECTED_NATIONALITY_TEXT, expected_value)
