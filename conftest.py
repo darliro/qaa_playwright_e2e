@@ -10,6 +10,8 @@ DATA_GENERATORS = {
     "middle_name": lambda: faker.name_nonbinary(),
     "id": lambda: faker.unique.bothify(text="??????????"),
     "date": lambda: datetime.now().strftime("%Y-%d-%m"),
+    "nationality": lambda: "Afghan",
+    "marital_status": lambda: "Single",
 }
 
 

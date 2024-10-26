@@ -50,3 +50,8 @@ class BasePage:
         expect(self.page.locator(locator)).to_have_value(
             expected_value, timeout=timeout
         )
+
+    @allure.step("Verify selected value in dropdown: {locator}")
+    def verify_dropdown_value(self, locator: str, expected_value: str) -> None:
+        self.wait_for_element(locator)
+        expect(self.page.locator(locator)).to_have_text(expected_value.strip())
