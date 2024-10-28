@@ -12,6 +12,7 @@ DATA_GENERATORS = {
     "date": lambda: datetime.now().strftime("%Y-%d-%m"),
     "nationality": lambda: "Afghan",
     "marital_status": lambda: "Single",
+    "gender": lambda: "Female",
 }
 
 
