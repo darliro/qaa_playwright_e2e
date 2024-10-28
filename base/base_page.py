@@ -55,3 +55,12 @@ class BasePage:
     def verify_dropdown_value(self, locator: str, expected_value: str) -> None:
         self.wait_for_element(locator)
         expect(self.page.locator(locator)).to_have_text(expected_value.strip())
+
+    @allure.step("Verify selected value in radio: {locator}")
+    def verify_radio_selected(self, locator: str) -> None:
+        self.wait_for_element(locator)
+        class_value = self.page.locator(locator).get_attribute("class")
+        assert (
+            "oxd-radio-input--active"
+            in self.page.locator(locator).get_attribute("class")
+        ), f"Expected 'oxd-radio-input--active' in class attribute, but got: {class_value}"
