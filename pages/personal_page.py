@@ -11,6 +11,7 @@ class PersonalPage(BasePage):
     MIDDLE_NAME_INPUT = "input[name='middleName']"
     EMPLOYEE_ID_INPUT = "//label[text()='Employee Id']/following::input[1]"
     OTHER_ID_INPUT = "//label[text()='Other Id']/following::input[1]"
+
     DRIVERS_LICENSE_NUMBER_INPUT = (
         '//label[text()="Driver\'s License Number"]/following::input[1]'
     )
@@ -26,6 +27,9 @@ class PersonalPage(BasePage):
     )
     SECOND_OPTION_IN_MARITAL_STATUS_LIST = "(//div[@role='option'])[2]"
     SELECTED_MARITAL_STATUS_TEXT = "(//div[@class='oxd-select-text-input'])[2]"
+
+    DATE_OF_BIRTH_DATE_INPUT = "(//input[@placeholder='yyyy-dd-mm'])[2]"
+    GENDER_RADIOBUTTON = "(//span[contains(@class, 'oxd-radio-input')])[2]"
 
     SAVE_BUTTON = "//p[contains(@class, 'orangehrm-form-hint')]/following-sibling::button[@type='submit']"
     LOADING_SPINNER = ".oxd-loading-spinner"
@@ -73,6 +77,15 @@ class PersonalPage(BasePage):
         self.click_element(self.MARITAL_STATUS_DROPDOWN_BUTTON)
         self.click_element(self.SECOND_OPTION_IN_MARITAL_STATUS_LIST)
 
+    @allure.step("Set date of birth to today")
+    def set_date_of_birth_to_today(self) -> None:
+        self.click_element(self.DATE_OF_BIRTH_DATE_INPUT)
+        self.select_today_date()
+
+    @allure.step("Update gender to the second option in the list")
+    def update_gender_to_second_option(self) -> None:
+        self.click_element(self.GENDER_RADIOBUTTON)
+
     @allure.step("Click 'Save' button")
     def click_save_button(self) -> None:
         self.click_element(self.SAVE_BUTTON)
@@ -116,6 +129,15 @@ class PersonalPage(BasePage):
     def verify_nationality_is_updated(self, expected_value: str) -> None:
         self.verify_dropdown_value(self.SELECTED_NATIONALITY_TEXT, expected_value)
 
-    @allure.step("Verify selected nationality is '{expected_value}'")
+    @allure.step("Verify selected marital status is '{expected_value}'")
     def verify_marital_status_is_updated(self, expected_value: str) -> None:
         self.verify_dropdown_value(self.SELECTED_MARITAL_STATUS_TEXT, expected_value)
+
+    @allure.step("Verify date of birth is updated to '{expected_date_of_birth}'")
+    def verify_date_of_birth_is_updated(self, expected_date_of_birth: str) -> None:
+        self.verify_field_value(self.DATE_OF_BIRTH_DATE_INPUT, expected_date_of_birth)
+
+    @allure.step("Verify gender is updated to '{expected_gender}'")
+    def verify_gender_is_updated(self, expected_gender: str) -> None:
+        if expected_gender.lower() == "female":
+            self.verify_radio_selected(self.GENDER_RADIOBUTTON)

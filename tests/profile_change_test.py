@@ -16,6 +16,8 @@ class TestProfileFeature(BaseTest):
         expiry_date = data_generator("date")
         nationality = data_generator("nationality")
         marital_status = data_generator("marital_status")
+        date_of_birth = data_generator("date")
+        gender = data_generator("gender")
 
         with allure.step("Login and navigate to dashboard"):
             self.login_page.open_page()
@@ -38,6 +40,8 @@ class TestProfileFeature(BaseTest):
             self.personal_page.set_expiry_date_to_today()
             self.personal_page.update_nationality_to_second_option()
             self.personal_page.update_marital_status_to_second_option()
+            self.personal_page.set_date_of_birth_to_today()
+            self.personal_page.update_gender_to_second_option()
             self.personal_page.click_save_button()
 
         with allure.step("Verify profile information update"):
@@ -52,6 +56,8 @@ class TestProfileFeature(BaseTest):
             self.personal_page.verify_license_expiry_date_is_updated(expiry_date)
             self.personal_page.verify_nationality_is_updated(nationality)
             self.personal_page.verify_marital_status_is_updated(marital_status)
+            self.personal_page.verify_date_of_birth_is_updated(date_of_birth)
+            self.personal_page.verify_gender_is_updated(gender)
 
         with allure.step("Capture screenshot after update"):
             self.personal_page.make_screenshot("Profile_info_change_success")
