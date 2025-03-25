@@ -2,7 +2,8 @@ import pytest
 from config.data_config import Data
 from pages.login_page import LoginPage
 from pages.dashboard_page import DashboardPage
-from pages.personal_page import PersonalPage
+from pages.personal_details_page import PersonalDetailsPage
+from pages.contact_details_page import ContactDetailsPage
 from playwright.sync_api import Page
 
 
@@ -15,4 +16,5 @@ class BaseTest:
         self.data = Data()
         self.login_page = LoginPage(page)
         self.dashboard_page = DashboardPage(page)
-        self.personal_page = PersonalPage(page)
+        self.personal_details_page = PersonalDetailsPage(page)
+        self.contact_details_page = ContactDetailsPage(page)

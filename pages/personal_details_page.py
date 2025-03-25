@@ -3,8 +3,8 @@ from base.base_page import BasePage
 from config.url_config import Links
 
 
-class PersonalPage(BasePage):
-    PAGE_URL = Links.PERSONAL_PAGE
+class PersonalDetailsPage(BasePage):
+    PAGE_URL = Links.PERSONAL_DETAILS_PAGE
 
     FIRST_NAME_INPUT = "input[name='firstName']"
     LAST_NAME_INPUT = "input[name='lastName']"
