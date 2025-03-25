@@ -13,6 +13,9 @@ DATA_GENERATORS = {
     "nationality": lambda: "Afghan",
     "marital_status": lambda: "Single",
     "gender": lambda: "Female",
+    "street_1": lambda: faker.street_address(),
+    "street_2": lambda: faker.secondary_address(),
+    "city": lambda: faker.city(),
 }
 
 
