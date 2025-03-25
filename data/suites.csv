@@ -1,3 +1,3 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","8902","Change Profile Details","tests","Sat Nov 09 11:28:55 UTC 2024","passed","Sat Nov 09 11:29:04 UTC 2024","TestProfileFeature","personal_details_change_test","",""
-"","3523","Change Contact Details","tests","Sat Nov 09 11:28:52 UTC 2024","broken","Sat Nov 09 11:28:55 UTC 2024","TestContactDetailsFeature","contact_details_change_test","",""
+"","5801","Change Contact Details","tests","Tue Mar 25 03:38:05 UTC 2025","broken","Tue Mar 25 03:38:11 UTC 2025","TestContactDetailsFeature","contact_details_change_test","",""
+"","9483","Change Profile Details","tests","Tue Mar 25 03:38:11 UTC 2025","passed","Tue Mar 25 03:38:20 UTC 2025","TestProfileFeature","personal_details_change_test","",""
