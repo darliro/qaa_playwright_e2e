@@ -2,8 +2,7 @@ name: UI Tests
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -13,49 +12,40 @@ jobs:
 
     steps:
       # Checkout the repository
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4.1.1
 
-      # Setup Python version
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v4
+      # Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5.1.0
         with:
           python-version: '3.13'
 
-      # Set up virtual environment
-      - name: Set up virtual environment
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
+      # Set up PDM with caching
+      - name: Install PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: '3.13'
+          cache: true
 
-      # Install greenlet via pip
-      - name: Install greenlet via pip
-        run: |
-          source .venv/bin/activate
-          pip install greenlet==3.1.1
-
-      # Install dependencies via PDM and Playwright Chromium
+      # Install project dependencies and Playwright Chromium
       - name: Install dependencies and Playwright
         run: |
-          source .venv/bin/activate
-          pip install pdm
           pdm install --prod --no-self --no-editable
           pdm run playwright install chromium
 
-      # Install Allure
+      # Install Allure CLI with OpenJDK
       - name: Install Allure
         run: |
           sudo apt-get update && sudo apt-get install -y openjdk-17-jre
-          curl -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.30.0/allure-commandline-2.30.0.tgz | tar -xz -C /opt/
-          sudo ln -s /opt/allure-2.30.0/bin/allure /usr/bin/allure
+          curl -Ls https://repo.maven.apache.org/maven2/io/qameta/allure/allure-commandline/2.33.0/allure-commandline-2.33.0.tgz | sudo tar -xz -C /opt/
+          sudo ln -sf /opt/allure-2.33.0/bin/allure /usr/bin/allure
 
       # Run UI tests with Playwright and Allure
       - name: Run UI tests
         env:
           LOGIN: ${{ secrets.LOGIN }}
           PASSWORD: ${{ secrets.PASSWORD }}
-        run: |
-          source .venv/bin/activate
-          pdm run pytest -sv --alluredir=allure-results
+        run: pdm run pytest -sv --alluredir=allure-results
         continue-on-error: true
 
       # List Allure results
