@@ -18,6 +18,7 @@ dependencies = [
     "distlib",
     "Faker",
     "filelock",
+    "greenlet",
     "h11",
     "identify",
     "idna",
